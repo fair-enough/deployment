@@ -1,9 +1,0 @@
-postgresql:
-  enabled: false
-
-externalDatabase:
-  host: my-release-cockroachdb-public.default
-  port: 26257
-  user: root
-  password: ""
-  database: KEYCLOAK
