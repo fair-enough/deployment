@@ -11,20 +11,20 @@ data:
       status: Connected to the JHipster Registry running in Kubernetes
     eureka:
       client:
-        initial-instance-info-replication-interval-seconds: 30
-        instance-info-replication-interval-seconds: 30
-        registry-fetch-interval-seconds: 30
+        initial-instance-info-replication-interval-seconds: 15
+        instance-info-replication-interval-seconds: 15
+        registry-fetch-interval-seconds: 15
         fetch-registry: true
         register-with-eureka: true
-        eureka-service-url-poll-interval-seconds: 30
+        eureka-service-url-poll-interval-seconds: 15
       instance:
-        lease-renewal-interval-in-seconds: 30
+        lease-renewal-interval-in-seconds: 10
         registry-default-open-for-traffic-count: 0
     jhipster:
       security:
         authentication:
           jwt:
-            base64-secret: MDhkNGNlYjBmNWZhNWY4OGVkNDNiOTc1NmFiNGMyNmRhYzRkNzQ0MGI0MzQ0MWEwOGQ1MzFiM2FkMGFkNDIxNDgyNjIzNjliYTZkMjVlYWEzNDEyODc3MWYxZTlkNWY3NTRkZg==
+            base64-secret: NGZlNmNmYmVkMDNiM2ZiZWI3MDI5NWRhMmM1MjY5NjgyYWY1OGViYmFkOTlkYjU4ZTkxZGVlMmZkZjFkMTcwYWE2NDMyMjM1N2U3Y2VmOTQwMDBmNzI4NDFiN2RiNDk2OWJlYw==
   # app specific configuration
   jhipster-registry.yml: |-
     eureka:

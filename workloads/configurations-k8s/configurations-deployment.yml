@@ -8,14 +8,12 @@ spec:
   selector:
     matchLabels:
       app: configurations
-      version: 'v1'
-  strategy: 
-    type: Recreate
+      version: "v1"
   template:
     metadata:
       labels:
         app: configurations
-        version: 'v1'
+        version: "v1"
     spec:
       affinity:
         podAntiAffinity:
@@ -70,39 +68,35 @@ spec:
                   key: password
             - name: SPRING_DATASOURCE_READ_SLAVE_ENABLED
               value: 'true'
-            - name: JHIPSTER_METRICS_LOGS_ENABLED
-              value: 'true'
-            - name: JHIPSTER_LOGGING_LOGSTASH_ENABLED
-              value: 'true'
-            - name: JHIPSTER_LOGGING_LOGSTASH_HOST
-              value: jhipster-logstash
-            - name: SPRING_ZIPKIN_ENABLED
-              value: 'true'
-            - name: SPRING_ZIPKIN_BASE_URL
-              value: http://jhipster-zipkin
+            - name: SPRING_LIQUIBASE_URL
+              value: jdbc:postgresql://acid-fairenough.default.svc.cluster.local:5432/configuration
+            - name: MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED
+              value: "true"
             - name: SPRING_SLEUTH_PROPAGATION_KEYS
-              value: 'x-request-id,x-ot-span-context'
+              value: "x-request-id,x-ot-span-context"
             - name: JAVA_OPTS
-              value: ' -Xmx256m -Xms256m'
+              value: " -Xmx256m -Xms256m"
+            - name: SERVER_SHUTDOWN
+              value: graceful
           resources:
             requests:
-              memory: '384Mi'
-              cpu: '100m'
+              memory: "384Mi"
+              cpu: "500m"
             limits:
-              memory: '1Gi'
-              cpu: '1'
+              memory: "1Gi"
+              cpu: "1"
           ports:
             - name: http
               containerPort: 8081
           readinessProbe:
             httpGet:
-              path: /management/health
+              path: /management/health/readiness
               port: http
             initialDelaySeconds: 20
             periodSeconds: 15
             failureThreshold: 6
           livenessProbe:
             httpGet:
-              path: /management/health
+              path: /management/health/liveness
               port: http
             initialDelaySeconds: 120

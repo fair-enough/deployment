@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gateway
+  name: accounts
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: gateway
+      app: accounts
       version: "v1"
   template:
     metadata:
       labels:
-        app: gateway
+        app: accounts
         version: "v1"
     spec:
       affinity:
@@ -24,29 +24,12 @@ spec:
                     - key: app
                       operator: In
                       values:
-                        - gateway
+                        - accounts
                 topologyKey: kubernetes.io/hostname
               weight: 100
-      initContainers:
-        - name: init-ds
-          image: busybox:latest
-          command:
-            - "/bin/sh"
-            - "-c"
-            - |
-              while true
-              do
-                rt=$(nc -z -w 1 gateway-postgresql 5432)
-                if [ $? -eq 0 ]; then
-                  echo "DB is UP"
-                  break
-                fi
-                echo "DB is not yet reachable;sleep for 10s before retry"
-                sleep 10
-              done
       containers:
-        - name: gateway-app
-          image: kidscare8playground/gateway
+        - name: accounts-app
+          image: kidscare8playground/accounts
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: prod
@@ -59,19 +42,34 @@ spec:
                   key: registry-admin-password
             - name: EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE
               value: http://admin:${jhipster.registry.password}@jhipster-registry.default.svc.cluster.local:8761/eureka/
-            - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://gateway-postgresql.default.svc.cluster.local:5432/gateway
+             - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://acid-fairenough.default.svc.cluster.local:5432/accounts
             - name: SPRING_DATASOURCE_USERNAME
-              value: gateway
-            - name: SPRING_R2DBC_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: gateway-postgresql
-                  key: postgresql-password
+                  name: accounts.acid-fairenough.credentials.postgresql.acid.zalan.do
+                  key: username
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: accounts.acid-fairenough.credentials.postgresql.acid.zalan.do
+                  key: password
+            - name: SPRING_DATASOURCE_READ_SLAVE_URL
+              value: jdbc:postgresql://acid-fairenough-repl.default.svc.cluster.local:5432/accounts
+            - name: SPRING_DATASOURCE_READ_SLAVE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: accounts.acid-fairenough.credentials.postgresql.acid.zalan.do
+                  key: username
+            - name: SPRING_DATASOURCE_READ_SLAVE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: accounts.acid-fairenough.credentials.postgresql.acid.zalan.do
+                  key: password
+            - name: SPRING_DATASOURCE_READ_SLAVE_ENABLED
+              value: 'true'
             - name: SPRING_LIQUIBASE_URL
-              value: jdbc:postgresql://gateway-postgresql.default.svc.cluster.local:5432/gateway
-            - name: SPRING_R2DBC_URL
-              value: r2dbc:postgresql://gateway-postgresql.default.svc.cluster.local:5432/gateway
+              value: jdbc:postgresql://acid-fairenough.default.svc.cluster.local:5432/accounts
             - name: MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED
               value: "true"
             - name: SPRING_SLEUTH_PROPAGATION_KEYS
@@ -89,7 +87,7 @@ spec:
               cpu: "1"
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: 8081
           readinessProbe:
             httpGet:
               path: /management/health/readiness
