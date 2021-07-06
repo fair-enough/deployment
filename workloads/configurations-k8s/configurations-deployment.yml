@@ -47,29 +47,25 @@ spec:
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: configurations.acid-fairenough.credentials.postgresql.acid.zalan.do
+                  name: configurations.acid-fairenough.credentials.postgresql.acid.zalan.do.postgres-cluster
                   key: username
-                  namespace: postgres-cluster
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: configurations.acid-fairenough.credentials.postgresql.acid.zalan.do
+                  name: configurations.acid-fairenough.credentials.postgresql.acid.zalan.do.postgres-cluster
                   key: password
-                  namespace: postgres-cluster
             - name: SPRING_DATASOURCE_READ_SLAVE_URL
               value: jdbc:postgresql://acid-fairenough-repl.postgres-cluster.svc.cluster.local:5432/configurations
             - name: SPRING_DATASOURCE_READ_SLAVE_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: configurations.acid-fairenough.credentials.postgresql.acid.zalan.do
+                  name: configurations.acid-fairenough.credentials.postgresql.acid.zalan.do.postgres-cluster
                   key: username
-                  namespace: postgres-cluster
             - name: SPRING_DATASOURCE_READ_SLAVE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: configurations.acid-fairenough.credentials.postgresql.acid.zalan.do
+                  name: configurations.acid-fairenough.credentials.postgresql.acid.zalan.do.postgres-cluster
                   key: password
-                  namespace: postgres-cluster
             - name: SPRING_DATASOURCE_READ_SLAVE_ENABLED
               value: 'true'
             - name: SPRING_LIQUIBASE_URL
