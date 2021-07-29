@@ -1,0 +1,12 @@
+apiVersion: v1 
+kind: ConfigMap 
+metadata: 
+  name: postgres-pod-config # The name must be same as configured in the values file earlier
+data: 
+  BACKUP_SCHEDULE: "0 0 */2 * *" # Schedule a base backup every second; you can customise as you wish
+  USE_WALG_BACKUP: "true" # Use the golang backup tool (faster) 
+  BACKUP_NUM_TO_RETAIN: "14" # For 2 backups per day, keep 7 days of base backups
+  AWS_ACCESS_KEY_ID: "AKIA4H76OBU4KKBTE3ED"
+  AWS_SECRET_ACCESS_KEY: "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"
+  AWS_REGION: "eu-central-1"
+  WALG_DISABLE_S3_SSE: “false”
