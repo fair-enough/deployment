@@ -29,7 +29,7 @@ spec:
               weight: 100
       containers:
         - name: accounts-app
-          image: kidscare8playground/accounts:0.1.6
+          image: kidscare8playground/accounts:0.1.7
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: prod
